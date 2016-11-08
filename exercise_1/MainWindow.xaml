@@ -1,0 +1,54 @@
+﻿<Window x:Class="exercise_1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:exercise_1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="700">
+    <Grid ShowGridLines="True">
+        <!--Определение строк таблицы-->
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160*"></ColumnDefinition>
+            <ColumnDefinition Width="357*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <UniformGrid Name="uniGrid" Margin="20,20,20,40" Grid.Row="0" Grid.Column="1">
+
+        </UniformGrid>
+        <Label x:Name="LabelfieldSize" Content="Введите размер поля(n на n):" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Width="179"/>
+        <TextBox x:Name="SizeField" Height="23" Margin="0,40,0,0" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Column="0"/>
+        <Button x:Name="EnterFieldSize" Content="Создать поле" HorizontalAlignment="Center" Margin="0,68,0,0" VerticalAlignment="Top" Width="94" Click="button_Click" Height="23" Grid.Column="0"/>
+
+
+        <Label x:Name="SelectAnItem" Content="Выбрать элемент для рисования" HorizontalAlignment="Center" Margin="0,98,0,0" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0"/>
+        <Button x:Name="Start" Content="Старт" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="75" Grid.Row="0" Grid.Column="0" Click="Start_Click"/>
+        <Button x:Name="Wall" Content="Стена" HorizontalAlignment="Center" Margin="0,145,0,0" VerticalAlignment="Top" Width="75" Grid.Row="0" Grid.Column="0" Click="Wall_Click"/>
+        <Button x:Name="Finish" Content="Финиш" HorizontalAlignment="Center" Margin="0,170,0,0" VerticalAlignment="Top" Width="75" Grid.Row="0" Grid.Column="0" Click="Finish_Click"/>
+        <Button x:Name="Result" Content="Результат" HorizontalAlignment="Center" Margin="0,314,0,0" VerticalAlignment="Top" Width="75" Click="Result_Click" Grid.Row="0" Grid.Column="0"/>
+        <Button x:Name="CleanField" Content="Очистить поле" HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Width="97" Grid.Row="0" Grid.Column="0" Click="ClearField_Click" Height="19"/>
+        <TextBox x:Name="textBox"  IsReadOnly="True" HorizontalAlignment="Center" Height="171" Margin="0,358,0,0" TextWrapping="Wrap" Text="Замечания: Размер поля может быть не больше 30на30. Начальные координаты старт - (0,0) финиш (1,1). Можно очистить все поле.   " VerticalAlignment="Top" Width="179" Grid.Row="0" Grid.Column="0"/>
+
+        <Label x:Name="label" Content="Выберите эвристику" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="46,200,46,302"/>
+        <GroupBox x:Name="radioButtons" Grid.Row="0" Grid.Column="0">
+            <StackPanel Grid.Row="0" Grid.Column="0" >
+                <RadioButton x:Name="FirstRadio"
+            		Height="16"
+            		Margin="0,230,0,0"
+            		HorizontalAlignment="Center"
+            		VerticalAlignment="Top"
+            		Content="1" Checked="First_Checked" IsChecked="True"/>
+                <RadioButton x:Name="SecondRadio"
+            		Height="16"
+            		Margin="0,0,0,0"
+            		HorizontalAlignment="Center"
+            		VerticalAlignment="Top"
+            		Content="2" />
+
+            </StackPanel>
+        </GroupBox>
+
+    </Grid>
+</Window>
