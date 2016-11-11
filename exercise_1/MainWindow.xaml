@@ -29,7 +29,7 @@
         <Button x:Name="Finish" Content="Финиш" HorizontalAlignment="Center" Margin="0,170,0,0" VerticalAlignment="Top" Width="75" Grid.Row="0" Grid.Column="0" Click="Finish_Click"/>
         <Button x:Name="Result" Content="Результат" HorizontalAlignment="Center" Margin="0,314,0,0" VerticalAlignment="Top" Width="75" Click="Result_Click" Grid.Row="0" Grid.Column="0"/>
         <Button x:Name="CleanField" Content="Очистить поле" HorizontalAlignment="Center" Margin="0,290,0,0" VerticalAlignment="Top" Width="97" Grid.Row="0" Grid.Column="0" Click="ClearField_Click" Height="19"/>
-        <TextBox x:Name="textBox"  IsReadOnly="True" HorizontalAlignment="Center" Height="171" Margin="0,358,0,0" TextWrapping="Wrap" Text="Замечания: Размер поля может быть не больше 30на30. Начальные координаты старт - (0,0) финиш (1,1). Можно очистить все поле.   " VerticalAlignment="Top" Width="179" Grid.Row="0" Grid.Column="0"/>
+        <TextBox x:Name="textBoxState"  IsReadOnly="True" HorizontalAlignment="Center" Height="171" Margin="0,358,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="179" Grid.Row="0" Grid.Column="0"/>
 
         <Label x:Name="label" Content="Выберите эвристику" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="46,200,46,302"/>
         <GroupBox x:Name="radioButtons" Grid.Row="0" Grid.Column="0">

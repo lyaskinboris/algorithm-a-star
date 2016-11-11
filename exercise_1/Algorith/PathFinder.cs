@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace exercise_1.Algorith
 {
     class PathFinder
     {
-        public static List<Point> FindPath(Point start, Point finish, int[,] field, int heuristic)
+        public static List<Point> FindPath(Point start, Point finish, int[,] field, int heuristic, ref Rectangle[,] rFiled)
         {
             List<PathNode> OpenList = new List<PathNode>(); //те клетки, которые просмотрели
             List<PathNode> CloseList = new List<PathNode>(); //те клетки, которые нужно просмотреть
-
+            int count = 0;
             PathNode startNode = new PathNode()
             {
                 Position = start,
@@ -39,7 +41,16 @@ namespace exercise_1.Algorith
                     var tempNode = OpenList.FirstOrDefault(node => node.Position == neighbour.Position); //берем соседа
 
                     if (tempNode == null) //если соседа нет в Open, добавляем его туда
+                    {
+
+                        //    rFiled[(int)neighbour.Position.X, (int)neighbour.Position.Y].Fill = Brushes.Aqua;
+                        //    System.Threading.Thread.Sleep(500);
+                    //    MainWindow mw = new MainWindow();
+                        
+                   //     mw.textBoxState.Text = "5555";
+                      //  rFiled[(int)neighbour.Position.X, (int)neighbour.Position.Y].Fill = count;
                         OpenList.Add(neighbour);
+                    }
                     else
                     {
                         if (tempNode.GLenghtPath > neighbour.GLenghtPath) //проверяем на длину пути. если пришли более коротким путем,
@@ -75,15 +86,15 @@ namespace exercise_1.Algorith
         {
             var result = new List<PathNode>();
 
-            Point[] neighbourPoints = new Point[8];
-            neighbourPoints[0] = new Point(pathNode.Position.X - 1, pathNode.Position.Y - 1);
-            neighbourPoints[1] = new Point(pathNode.Position.X - 1, pathNode.Position.Y);
-            neighbourPoints[2] = new Point(pathNode.Position.X - 1, pathNode.Position.Y + 1);
-            neighbourPoints[3] = new Point(pathNode.Position.X, pathNode.Position.Y + 1);
-            neighbourPoints[4] = new Point(pathNode.Position.X, pathNode.Position.Y - 1);
-            neighbourPoints[5] = new Point(pathNode.Position.X + 1, pathNode.Position.Y - 1);
-            neighbourPoints[6] = new Point(pathNode.Position.X + 1, pathNode.Position.Y);
-            neighbourPoints[7] = new Point(pathNode.Position.X + 1, pathNode.Position.Y + 1);
+            Point[] neighbourPoints = new Point[4];
+          //  neighbourPoints[0] = new Point(pathNode.Position.X - 1, pathNode.Position.Y - 1);
+            neighbourPoints[0] = new Point(pathNode.Position.X - 1, pathNode.Position.Y);
+          //  neighbourPoints[2] = new Point(pathNode.Position.X - 1, pathNode.Position.Y + 1);
+            neighbourPoints[1] = new Point(pathNode.Position.X, pathNode.Position.Y + 1);
+            neighbourPoints[2] = new Point(pathNode.Position.X, pathNode.Position.Y - 1);
+          //  neighbourPoints[5] = new Point(pathNode.Position.X + 1, pathNode.Position.Y - 1);
+            neighbourPoints[3] = new Point(pathNode.Position.X + 1, pathNode.Position.Y);
+          //  neighbourPoints[7] = new Point(pathNode.Position.X + 1, pathNode.Position.Y + 1);
 
             //заполняем список соседей на карте
             foreach (var point in neighbourPoints)
@@ -101,7 +112,7 @@ namespace exercise_1.Algorith
                 {
                     Position = point,
                     Parent = pathNode,
-                    GLenghtPath = pathNode.GLenghtPath,
+                    GLenghtPath = pathNode.GLenghtPath + 1,
                     HLenght = GetHLenghtPath(point, finish, heuristic)
                 };
                 result.Add(neighbourNode);

@@ -139,13 +139,14 @@ namespace exercise_1
                         heuristic = 1;
                     else
                         heuristic = 2;
-                    result = PathFinder.FindPath(start, finish, field, heuristic);
+                    result = PathFinder.FindPath(start, finish, field, heuristic, ref rField);
                     if (result != null)
                     {
                         foreach (var drawResult in result)
                             if (!((drawResult.X == start.X && drawResult.Y == start.Y) || (drawResult.X == finish.X && drawResult.Y == finish.Y)))
                                 rField[(int)drawResult.X, (int)drawResult.Y].Fill = Brushes.Green;
                         flagResult = true;
+                        textBoxState.Text = String.Format("sddsfdsg") ;
                     }
                     else
                     {
@@ -157,6 +158,11 @@ namespace exercise_1
             else
                 MessageBox.Show("Очистите поле.");
 
+        }
+        public void TempOpen(Point open)
+        {
+            rField[1, 1].Fill = Brushes.Black;
+        //    rField[1, 1].Fill = Brushes.Aqua;
         }
 
         //очищаем поле
