@@ -146,7 +146,6 @@ namespace exercise_1
                             if (!((drawResult.X == start.X && drawResult.Y == start.Y) || (drawResult.X == finish.X && drawResult.Y == finish.Y)))
                                 rField[(int)drawResult.X, (int)drawResult.Y].Fill = Brushes.Green;
                         flagResult = true;
-                        textBoxState.Text = String.Format("sddsfdsg") ;
                     }
                     else
                     {

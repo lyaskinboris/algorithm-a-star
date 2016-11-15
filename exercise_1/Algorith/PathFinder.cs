@@ -13,6 +13,8 @@ namespace exercise_1.Algorith
     {
         public static List<Point> FindPath(Point start, Point finish, int[,] field, int heuristic, ref Rectangle[,] rFiled)
         {
+
+
             List<PathNode> OpenList = new List<PathNode>(); //те клетки, которые просмотрели
             List<PathNode> CloseList = new List<PathNode>(); //те клетки, которые нужно просмотреть
             int count = 0;
@@ -27,6 +29,7 @@ namespace exercise_1.Algorith
 
             while (OpenList.Count > 0) // перебираем все узлы, которые есть в open, то есть всю карты
             {
+                //System.Threading.Thread.Sleep(100);
                 var currentNode = OpenList.OrderBy(node => node.FLenghtPath).First(); //берем минимальный узел из Open
                                                                                       //с минимальным значением F (sort -> first item)
                 if (currentNode.Position == finish) // проверяем, дошли до конца ли
@@ -42,13 +45,9 @@ namespace exercise_1.Algorith
 
                     if (tempNode == null) //если соседа нет в Open, добавляем его туда
                     {
+                        if (neighbour.Position != finish)
+                            rFiled[(int)neighbour.Position.X, (int)neighbour.Position.Y].Fill = Brushes.Aqua;
 
-                        //    rFiled[(int)neighbour.Position.X, (int)neighbour.Position.Y].Fill = Brushes.Aqua;
-                        //    System.Threading.Thread.Sleep(500);
-                    //    MainWindow mw = new MainWindow();
-                        
-                   //     mw.textBoxState.Text = "5555";
-                      //  rFiled[(int)neighbour.Position.X, (int)neighbour.Position.Y].Fill = count;
                         OpenList.Add(neighbour);
                     }
                     else
@@ -61,6 +60,9 @@ namespace exercise_1.Algorith
                         }
                     }
                 }
+
+
+                //  rFiled[(int)neighbour.Position.X, (int)neighbour.Position.Y].Fill = count;
             }
 
             return null; //если вдруг нет пути к финишу
@@ -86,15 +88,17 @@ namespace exercise_1.Algorith
         {
             var result = new List<PathNode>();
 
-            Point[] neighbourPoints = new Point[4];
-          //  neighbourPoints[0] = new Point(pathNode.Position.X - 1, pathNode.Position.Y - 1);
-            neighbourPoints[0] = new Point(pathNode.Position.X - 1, pathNode.Position.Y);
-          //  neighbourPoints[2] = new Point(pathNode.Position.X - 1, pathNode.Position.Y + 1);
-            neighbourPoints[1] = new Point(pathNode.Position.X, pathNode.Position.Y + 1);
-            neighbourPoints[2] = new Point(pathNode.Position.X, pathNode.Position.Y - 1);
-          //  neighbourPoints[5] = new Point(pathNode.Position.X + 1, pathNode.Position.Y - 1);
-            neighbourPoints[3] = new Point(pathNode.Position.X + 1, pathNode.Position.Y);
-          //  neighbourPoints[7] = new Point(pathNode.Position.X + 1, pathNode.Position.Y + 1);
+            Point[] neighbourPoints = new Point[8];
+
+
+            neighbourPoints[0] = new Point(pathNode.Position.X - 1, pathNode.Position.Y - 1);
+            neighbourPoints[1] = new Point(pathNode.Position.X - 1, pathNode.Position.Y);
+            neighbourPoints[2] = new Point(pathNode.Position.X - 1, pathNode.Position.Y + 1);
+            neighbourPoints[3] = new Point(pathNode.Position.X, pathNode.Position.Y + 1);
+            neighbourPoints[4] = new Point(pathNode.Position.X, pathNode.Position.Y - 1);
+            neighbourPoints[5] = new Point(pathNode.Position.X + 1, pathNode.Position.Y - 1);
+            neighbourPoints[6] = new Point(pathNode.Position.X + 1, pathNode.Position.Y);
+            neighbourPoints[7] = new Point(pathNode.Position.X + 1, pathNode.Position.Y + 1);
 
             //заполняем список соседей на карте
             foreach (var point in neighbourPoints)
@@ -103,10 +107,29 @@ namespace exercise_1.Algorith
                     continue;
                 if (point.Y < 0 || point.Y >= field.GetLength(1)) // граница карты по X
                     continue;
+                
 
                 int xWall = (int)point.X, yWall = (int)point.Y;
+
                 if ((field[xWall, yWall] != 0)) // проверка на стенки
                     continue;
+
+
+
+                if (xWall < (Math.Sqrt(field.Length) - 1) && yWall < (Math.Sqrt(field.Length) - 1))
+                    if ((field[xWall + 1, yWall] == 1 || field[xWall, yWall + 1] == 1) && (point == neighbourPoints[0])) // верх-право. 
+                        continue;
+                if (xWall > 0 && yWall < (Math.Sqrt(field.Length) - 1))
+                    if ((field[xWall - 1, yWall] == 1 || field[xWall, yWall + 1] == 1) && (point == neighbourPoints[5] )) // право-низ
+                        continue;
+                if (xWall > 0 && yWall > 0)
+                    if ((field[xWall - 1, yWall] == 1 || field[xWall, yWall - 1] == 1) && (point == neighbourPoints[7] )) // низ - лево
+                        continue;
+                if (xWall < (Math.Sqrt(field.Length) - 1) && yWall > 0)
+                    if ((field[xWall + 1, yWall] == 1 || field[xWall, yWall - 1] == 1) && (point == neighbourPoints[2])) // лево - верх
+                        continue;
+
+
 
                 var neighbourNode = new PathNode()
                 {
@@ -117,6 +140,8 @@ namespace exercise_1.Algorith
                 };
                 result.Add(neighbourNode);
             }
+
+
             return result;
         }
         #endregion
