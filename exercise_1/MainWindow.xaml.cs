@@ -19,7 +19,7 @@ namespace exercise_1
         public Point start, finish;
         private int sizeOfField;
         private int item;
-        private int[] tempStart = new int[2], tempFinish = new int[2];
+        private int[] tempStart = new int[2], tempFinish = new int[2]; //для рисования. это лишнее
         private List<Point> result;
         private int heuristic;
         private bool flagResult;
@@ -82,7 +82,7 @@ namespace exercise_1
             else
                 MessageBox.Show("неккоректный размер поля");
         }
-        
+
         //указание цвета клетки для старта
         void StartCellColor(int RX, int RY)
         {
@@ -138,7 +138,11 @@ namespace exercise_1
                     if (FirstRadio.IsChecked == true)
                         heuristic = 1;
                     else
+                        if (SecondRadio.IsChecked == true)
                         heuristic = 2;
+                    else
+                        heuristic = 3;
+
                     result = PathFinder.FindPath(start, finish, field, heuristic, ref rField);
                     if (result != null)
                     {
@@ -158,29 +162,6 @@ namespace exercise_1
                 MessageBox.Show("Очистите поле.");
 
         }
-        public void TempOpen(Point open)
-        {
-            rField[1, 1].Fill = Brushes.Black;
-        //    rField[1, 1].Fill = Brushes.Aqua;
-        }
-
-        //очищаем поле
-        private void ClearField_Click(object sender, RoutedEventArgs e)
-        {
-            if (SizeField.Text != "" && SizeField.Text.Length == SizeField.Text.Where(c => char.IsDigit(c)).Count() && Convert.ToInt32(SizeField.Text) < 31)
-            {
-                Initialization();
-                for (int i = 0; i < sizeOfField; ++i)
-                    for (int j = 0; j < sizeOfField; ++j)
-                        if ((field[i, j] == 1))
-                        {
-                            rField[i, j].Fill = Brushes.White;
-                            field[i, j] = 0;
-                        }
-                StartCellColor((int)start.X, (int)start.Y);
-                FinishCellColor((int)finish.X, (int)finish.Y);
-            }
-        }
 
         // элементы: стенка, старт, финиш
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -191,6 +172,11 @@ namespace exercise_1
         private void First_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void close_Click(object sender, RoutedEventArgs e)
+        {
+            PathFinder.DrawClose(result, start, finish, ref rField);
         }
 
         private void Wall_Click(object sender, RoutedEventArgs e)

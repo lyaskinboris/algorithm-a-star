@@ -11,13 +11,14 @@ namespace exercise_1.Algorith
 {
     class PathFinder
     {
+        static List<PathNode> temp; //список закрытых
+
+
         public static List<Point> FindPath(Point start, Point finish, int[,] field, int heuristic, ref Rectangle[,] rFiled)
         {
-
-
             List<PathNode> OpenList = new List<PathNode>(); //те клетки, которые просмотрели
             List<PathNode> CloseList = new List<PathNode>(); //те клетки, которые нужно просмотреть
-            int count = 0;
+
             PathNode startNode = new PathNode()
             {
                 Position = start,
@@ -37,7 +38,7 @@ namespace exercise_1.Algorith
                 OpenList.Remove(currentNode); //удаляем текущий узел из Open, тк он нам в нем больше не нужен, мы его и так смотрим
                 CloseList.Add(currentNode);  //добавляем узел в Close, тк это то, что просмотрели
                 foreach (var neighbour in UnClosedNeigdours(currentNode, finish, field, heuristic)) //проверяем всех соседей текущего узла                                                                                        
-                                                                                         //которые не являются частью нашего массива closed
+                                                                                                    //которые не являются частью нашего массива closed
                 {
                     if (CloseList.Count(node => node.Position == neighbour.Position) > 0) //пропускаем элементы closed
                         continue;
@@ -47,7 +48,8 @@ namespace exercise_1.Algorith
                     {
                         if (neighbour.Position != finish)
                             rFiled[(int)neighbour.Position.X, (int)neighbour.Position.Y].Fill = Brushes.Aqua;
-
+                        MainWindow main = new MainWindow();
+                        main.textBoxState.Text = Convert.ToString(neighbour.Position.X);
                         OpenList.Add(neighbour);
                     }
                     else
@@ -56,28 +58,41 @@ namespace exercise_1.Algorith
                                                                           //то меняем текущий на этот коротокий
                         {
                             tempNode.Parent = currentNode;
-                            tempNode.GLenghtPath = neighbour.FLenghtPath;
+                            tempNode.GLenghtPath = neighbour.GLenghtPath;
                         }
                     }
                 }
 
-
+                temp = CloseList;
                 //  rFiled[(int)neighbour.Position.X, (int)neighbour.Position.Y].Fill = count;
             }
 
             return null; //если вдруг нет пути к финишу
         }
+        //рисем закрытые 
+        static public void DrawClose(List<Point> result, Point start, Point finish, ref Rectangle[,] rFiled)
+        {
+            foreach (var rsl in temp)
+                if (rsl.Position != start)
+                    rFiled[(int)rsl.Position.X, (int)rsl.Position.Y].Fill = Brushes.Red;
+            foreach (var drawResult in result)
+                if (!((drawResult == start) || (drawResult == finish)))
+                    rFiled[(int)drawResult.X, (int)drawResult.Y].Fill = Brushes.Green;
+        }
+
         #region эвристическая функция
         public static int GetHLenghtPath(Point start, Point finish, int heuristic)//считаем эвристическую функцию по пифагору
         {
-            if (heuristic == 1)
+            switch (heuristic)
             {
-                return (int)Math.Sqrt(
-                    Math.Pow((start.X - finish.X), 2) + Math.Pow((start.Y - finish.Y), 2)
-                    );
+                case 1:
+                    return (int)Math.Sqrt(
+                                Math.Pow((start.X - finish.X), 2) + Math.Pow((start.Y - finish.Y), 2));
+                case 2:
+                    return (int)Math.Abs((start.X - finish.X)) + (int)Math.Abs((start.Y - finish.Y));
+                default:
+                    return Math.Max((int)Math.Abs((start.X - finish.X)), (int)Math.Abs((start.Y - finish.Y)));
             }
-            else
-                return (int)Math.Abs((start.X - finish.X)) + (int)Math.Abs((start.Y - finish.Y));
 
         }
         #endregion
@@ -107,7 +122,7 @@ namespace exercise_1.Algorith
                     continue;
                 if (point.Y < 0 || point.Y >= field.GetLength(1)) // граница карты по X
                     continue;
-                
+
 
                 int xWall = (int)point.X, yWall = (int)point.Y;
 
@@ -120,10 +135,10 @@ namespace exercise_1.Algorith
                     if ((field[xWall + 1, yWall] == 1 || field[xWall, yWall + 1] == 1) && (point == neighbourPoints[0])) // верх-право. 
                         continue;
                 if (xWall > 0 && yWall < (Math.Sqrt(field.Length) - 1))
-                    if ((field[xWall - 1, yWall] == 1 || field[xWall, yWall + 1] == 1) && (point == neighbourPoints[5] )) // право-низ
+                    if ((field[xWall - 1, yWall] == 1 || field[xWall, yWall + 1] == 1) && (point == neighbourPoints[5])) // право-низ
                         continue;
                 if (xWall > 0 && yWall > 0)
-                    if ((field[xWall - 1, yWall] == 1 || field[xWall, yWall - 1] == 1) && (point == neighbourPoints[7] )) // низ - лево
+                    if ((field[xWall - 1, yWall] == 1 || field[xWall, yWall - 1] == 1) && (point == neighbourPoints[7])) // низ - лево
                         continue;
                 if (xWall < (Math.Sqrt(field.Length) - 1) && yWall > 0)
                     if ((field[xWall + 1, yWall] == 1 || field[xWall, yWall - 1] == 1) && (point == neighbourPoints[2])) // лево - верх
